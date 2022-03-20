@@ -1,3 +1,12 @@
+all:
+	docker-compose up
+
+down:
+	docker-compose down
+
+re:
+	docker-compose up --build
+
 build:
 	@go build -o blogService cmd/app/main.go
 	@echo "blogService is compiled!"
@@ -11,4 +20,4 @@ test:
 clean:
 	@rm blogService
 
-.PHONY: build, test, clean
+.PHONY: down, re, build, test, clean

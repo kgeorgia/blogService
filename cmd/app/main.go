@@ -1,28 +1,32 @@
 package main
 
 import (
-	"blog_service2/internal/app"
-	"blog_service2/internal/controller/handler"
-	_ "github.com/lib/pq"
-	"log"
-	"net/http"
-	"os"
+    "blog_service2/internal/app"
+    "blog_service2/internal/controller/handler"
+    "blog_service2/internal/repository"
+    _ "github.com/lib/pq"
+    "log"
+    "net/http"
+    "os"
 )
 
 func main() {
-	port := ":8080"
+    port := ":8080"
 
-	if fromEnv := os.Getenv("PORT"); fromEnv != "" {
-		port = fromEnv
-	}
+    dbUser, dbPassword, dbName :=
+        os.Getenv("DB_USER"),
+        os.Getenv("DB_PASSWORD"),
+        os.Getenv("DB_NAME")
 
-	handler, err := handler.New()
-	if err != nil {
-		log.Fatal(err)
-	}
+    repo, err := repository.New(dbUser, dbPassword, dbName)
+    if err != nil {
+        log.Fatal(err)
+    }
 
-	router := app.NewRouter(handler)
+    handler := handler.New(repo)
 
-	err = http.ListenAndServe(port, router)
-	log.Fatal(err)
+    router := app.NewRouter(handler)
+
+    err = http.ListenAndServe(port, router)
+    log.Fatal(err)
 }

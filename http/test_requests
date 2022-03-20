@@ -1,5 +1,5 @@
 Получение всех постов в блоге
-curl -i http://localhost:8080/api/v1/blog
+docker
 
 Получение всех постов имеющих в поле title подстроку «Первая»
 curl -i http://localhost:8080/api/v1/blog?title=Первая
